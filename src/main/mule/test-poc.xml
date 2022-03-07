@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ddfa387e-6594-4ebe-9fb6-8bee9ebd143b" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="test-pocFlow" doc:id="b8e77613-ecc6-4ef1-bb68-3b1d20ad9cc2" >
+		<http:listener doc:name="Listener" doc:id="c590f323-b935-4091-8b17-87a88e3a82ed" config-ref="HTTP_Listener_config" path="test"/>
+		<logger level="INFO" doc:name="Logger" doc:id="b05b4efc-470d-4485-9bd1-52e3188e8930" message="start flow"/>
+		<ee:transform doc:name="Transform Message" doc:id="7da22bba-d378-458e-9cc3-1c801d818fed" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message": "test successful"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="e6f0890c-8d47-4a9c-9c09-3f20428473eb" message="end flow #[payload]"/>
+	</flow>
+</mule>
